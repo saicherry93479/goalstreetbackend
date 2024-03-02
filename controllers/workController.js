@@ -118,3 +118,8 @@ exports.updateEditWork = async (req, res) => {
     res.render("workedit", { formData:req.body, errors: {finalError:"Some Thing Went Wrong"} });
   }
 };
+
+exports.sendWorkDataToFrontEnd=async (req,res)=>{
+  const data=await WorkData.find()
+  res.send({data:data})
+}

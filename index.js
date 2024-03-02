@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const formController = require("./controllers/formController");
 var cors = require("cors");
-const { addWorkData, renderAddWorkDataForm, getWorkTable, editWork, updateEditWork } = require("./controllers/workController");
+const { addWorkData, renderAddWorkDataForm, getWorkTable, editWork, updateEditWork, sendWorkDataToFrontEnd } = require("./controllers/workController");
 
 const app = express();
 
@@ -41,6 +41,7 @@ app.get("/workdata/add",renderAddWorkDataForm)
 app.get("/worktable",getWorkTable)
 app.get("/works/edit/:id",editWork)
 app.post("/works/edit/:id",updateEditWork)
+app.get("/frontendWorkData",sendWorkDataToFrontEnd)
 
 // const url = "mongodb://localhost/mydatabase";
 // mongoose.connect(url);

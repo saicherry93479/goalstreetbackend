@@ -1,0 +1,178 @@
+<!-- views/add-work-data.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Work Data</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel=" stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Ubuntu", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="py-12">
+    <h1 class="text-center font-bold">Edit Work Data</h1>
+    <form
+      action="/works/edit/<%=formData._id%>"
+      method="POST"
+      class="max-w-sm mx-auto"
+    >
+      <div class="mb-5">
+        <label
+          for="jobName"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Job Name</label
+        >
+        <input
+          type="text"
+          id="jobName"
+          name="jobName"
+          minlength="7"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Software Developer"
+          value="<%= formData.jobName || '' %>"
+          required
+        />
+        <% if (errors.jobName) { %>
+        <p class="text-sm text-right text-red-600"><%= errors.jobName %></p>
+        <% } %>
+      </div>
+      <div class="mb-5">
+        <label
+          for="companyName"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Company Name</label
+        >
+        <input
+          type="text"
+          id="companyName"
+          name="companyName"
+          minlength="3"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          value="<%= formData.companyName || '' %>"
+          required
+          placeholder="Google"
+        />
+        <% if (errors.companyName) { %>
+        <p><%= errors.companyName.message %></p>
+        <% } %>
+      </div>
+      <div class="mb-5">
+        <label
+          for="domain"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Domain</label
+        >
+        <input
+          type="text"
+          id="domain"
+          name="domain"
+          minlength="2"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          value="<%= formData.domain || '' %>"
+          required
+          placeholder="Devops"
+        />
+        <% if (errors.domain) { %>
+        <p><%= errors.domain.message %></p>
+        <% } %>
+      </div>
+      <div class="mb-5">
+        <label
+          for="salaryRange"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Salary Range</label
+        >
+        <input
+          type="text"
+          id="salaryRange"
+          name="salaryRange"
+          minlength="4"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          value="<%= formData.salaryRange || '' %>"
+          required
+          placeholder="20000-30000"
+        />
+        <% if (errors.salaryRange) { %>
+        <p><%= errors.salaryRange %></p>
+        <% } %>
+      </div>
+      <div class="mb-5">
+        <label
+          for="officeType"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Office Type</label
+        >
+        <input
+          type="text"
+          id="officeType"
+          name="officeType"
+          minlength="4"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          value="<%= formData.officeType || '' %>"
+          required
+          placeholder="Hybrid"
+        />
+        <% if (errors.officeType) { %>
+        <p><%= errors.officeType %></p>
+        <% } %>
+      </div>
+      <div class="mb-5">
+        <label
+          for="jobType"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Job Type</label
+        >
+        <input
+          type="text"
+          id="jobType"
+          name="jobType"
+          minlength="4"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          value="<%= formData.jobType || '' %>"
+          required
+          placeholder="Internship"
+        />
+        <% if (errors.jobType) { %>
+        <p><%= errors.jobType %></p>
+        <% } %>
+      </div>
+      <div class="mb-5">
+        <label
+          for="jobDescription"
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >jobDescription</label
+        >
+
+        <textarea
+          id="jobDescription"
+          name="jobDescription"
+          value="<%= formData.jobDescription || '' %>"
+          rows="4"
+          class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="JOb Description Goes here"
+          minlength="20"
+        >
+        <%= formData.jobDescription %></textarea
+        >
+      </div>
+      <button
+        type="submit"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      >
+        Update
+      </button>
+    </form>
+  </body>
+</html>

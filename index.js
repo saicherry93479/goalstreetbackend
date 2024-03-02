@@ -7,6 +7,7 @@ const { addWorkData, renderAddWorkDataForm, getWorkTable, editWork, updateEditWo
 
 const app = express();
 
+
 app.use(cors());
 // Parse incoming requests
 app.use(bodyParser.json());

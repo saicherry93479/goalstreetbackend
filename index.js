@@ -5,7 +5,7 @@ const formController = require("./controllers/formController");
 const jwt = require('jsonwebtoken');
 
 var cors = require("cors");
-const { addWorkData, renderAddWorkDataForm, getWorkTable, editWork, updateEditWork, sendWorkDataToFrontEnd } = require("./controllers/workController");
+const { addWorkData, renderAddWorkDataForm, getWorkTable, editWork, updateEditWork, sendWorkDataToFrontEnd,deleteWork } = require("./controllers/workController");
 const { login, authenticate, logout } = require("./controllers/authController");
 
 const secretKey = 'mysecretkey_goalstreet';
@@ -90,6 +90,7 @@ app.get("/frontendWorkData", sendWorkDataToFrontEnd)
 app.get("/", login)
 app.post('/', authenticate)
 app.get('/logout', logout)
+app.get("/works/delete/:id",deleteWork)
 
 // const url = "mongodb://localhost/mydatabase";
 // mongoose.connect(url);

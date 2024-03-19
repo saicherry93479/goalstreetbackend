@@ -15,7 +15,7 @@ function authenticationMiddleware(req, res, next) {
   if (req.path === '/' && req.method === 'POST') {
     console.log('request came ', req.method)
     next();
-  }else if(req.path='/frontendWorkData'){
+  }else if(req.path==='/frontendWorkData' || req.path==='/submit'){
     next();
   } else {
     const authtoken = req.query.authtoken;

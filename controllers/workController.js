@@ -3,6 +3,7 @@ const WorkData = require("../models/Work");
 
 // Controller to render the add work data form
 exports.renderAddWorkDataForm = (req, res) => {
+  console.log("request in worktable ", req.cookies)
   res.render("workpage", { formData: {}, errors: {} });
 };
 
@@ -55,6 +56,7 @@ exports.addWorkData = async (req, res) => {
 };
 
 exports.getWorkTable = async (req, res) => {
+  console.log("rquest body and cookies is ", Object.keys(req))
   try {
     const formData = await WorkData.find();
     console.log("workData is ", formData);
@@ -78,7 +80,7 @@ exports.editWork = async (req, res) => {
 exports.updateEditWork = async (req, res) => {
   let errors = {};
   const productId = req.params.id;
-  console.log("came here ",productId)
+  console.log("came here ", productId)
   console.log("came");
   try {
     const {
@@ -111,15 +113,26 @@ exports.updateEditWork = async (req, res) => {
     if (updateProduct) {
       res.redirect("/worktable")
     }
-    else{
-      res.render("workedit", { formData:req.body, errors: {finalError:"unable to update work details"} });
+    else {
+      res.render("workedit", { formData: req.body, errors: { finalError: "unable to update work details" } });
     }
   } catch (e) {
-    res.render("workedit", { formData:req.body, errors: {finalError:"Some Thing Went Wrong"} });
+    res.render("workedit", { formData: req.body, errors: { finalError: "Some Thing Went Wrong" } });
   }
 };
 
-exports.sendWorkDataToFrontEnd=async (req,res)=>{
-  const data=await WorkData.find()
-  res.send({data:data})
+exports.sendWorkDataToFrontEnd = async (req, res) => {
+  const data = await WorkData.find()
+  res.send({ data: data })
+}
+
+exports.deleteWork = async (req, res) => {
+  const productId = req.params.id;
+  try {
+    await WorkData.deleteOne({ _id: productId })
+
+  } catch (e) {
+    console.log("unable to delete work")
+  }
+  res.redirect("/worktable")
 }

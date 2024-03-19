@@ -53,7 +53,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(authenticationMiddleware)
 
-const url = 'mongodb://localhost:27017/';
+const url='mongodb+srv://cherryworkspacemail:cherryworkspacemail@cluster0.qqvoel7.mongodb.net/?retryWrites=true&w=majority';
+
 
 // Connect to MongoDB
 // mongoose

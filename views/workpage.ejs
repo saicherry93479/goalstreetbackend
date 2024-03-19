@@ -23,6 +23,38 @@
         font-family: "Ubuntu", sans-serif;
       }
     </style>
+    <script>
+      // Function to check if a cookie exists
+      function getCookie(name) {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(name + "=")) {
+            return cookie.substring(name.length + 1);
+          }
+        }
+        return null;
+      }
+
+      // Check if the authentication cookie exists
+      const authToken = getCookie("auth");
+
+      // If auth token exists, append it to the URL
+      if (authToken) {
+        const currentUrl = window.location.href;
+        const separator = currentUrl.includes("?") ? "&" : "?";
+        if (!currentUrl.includes("authtoken=")) {
+          const newUrl =
+            currentUrl +
+            separator +
+            "authtoken=" +
+            encodeURIComponent(authToken);
+          window.location.href = newUrl;
+        }
+
+        // Redirect to the new URL
+      }
+    </script>
   </head>
   <body class="">
     <div class="relative">
@@ -33,7 +65,7 @@
         <i class="bi bi-filter-left px-2 bg-gray-900 rounded-md"></i>
       </span>
       <div
-        class="sidebar hidden  lg:block fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900 z-10"
+        class="sidebar hidden lg:block fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900 z-10"
       >
         <div class="text-gray-100 text-xl">
           <div class="p-2.5 mt-1 flex items-center">
@@ -51,6 +83,7 @@
         </div>
 
         <a
+          id="dashboardLink"
           href="/dashboard"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
@@ -60,6 +93,7 @@
           >
         </a>
         <a
+          id="dashboardLinkOne"
           href="/worktable"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
@@ -69,6 +103,7 @@
           >
         </a>
         <a
+          id="dashboardLinkTwo"
           href="/workdata/add"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
@@ -77,12 +112,13 @@
         </a>
         <div class="my-4 bg-gray-600 h-[1px]"></div>
 
-        <div
+        <a
+          href="/logout"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-box-arrow-in-right"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
-        </div>
+      </a>
       </div>
     </div>
     <div class="py-12 px-6 lg:mt-0">

@@ -9,24 +9,29 @@ exports.logout=async (req,res)=>{
 
 
 exports.login = async (req, res) => {
-    // const authtoken = req.query.authtoken;
-    // console.log(req.query)
-    // console.log("params ", authtoken)
-    // const secretKey = 'mysecretkey_goalstreet';
-    // if (authtoken !== null && authtoken !== undefined) {
+    const authtoken = req.query.authtoken;
+    console.log(req.query)
+    console.log("params in login ", authtoken)
+    const secretKey = 'mysecretkey_goalstreet';
+    if (authtoken !== null && authtoken !== undefined) {
 
-    //     try {
-    //         const verified = jwt.verify(authtoken, secretKey);
-    //         res.redirect('/dashboard')
-    //         return
-    //     } catch {
+        try {
+            const verified = jwt.verify(authtoken, secretKey);
+            if(verified.role==='admin'){
+            res.redirect(`/dashboard?authtoken=${req.query.authtoken}`)
+            }
+            if(verified.role==='HR'){
+                res.redirect(`/worktable?authtoken=${req.query.authtoken}`)
+            }
+            return
+        } catch {
 
-    //         res.render("LoginPage.ejs", { loginData: {}, errors: {} })
-    //     }
+            res.render("LoginPage.ejs", { loginData: {}, errors: {} })
+        }
 
-    // } else {
+    } else {
         res.render("LoginPage.ejs", { loginData: {}, errors: {} })
-    // }
+    }
 
 
 
@@ -53,13 +58,13 @@ exports.authenticate = async (req, res) => {
         return res.status(400).render("LoginPage", { loginData: req.body, errors: errors });
 
     }
-    const payload = { username: username, password: password };
+    const payload = { username: username, password: password,role:'admin' };
 
     const token = jwt.sign(payload, secretKey, { expiresIn: '1h' });
     console.log('new token is ',token)
     res.cookie('auth', token);
     // res.send({ authToken: token })
-    res.redirect('/dashboard')
+    res.redirect(`/dashboard?authtoken=${token}`)
 
 }
 

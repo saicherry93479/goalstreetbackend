@@ -3,14 +3,17 @@ const WorkData = require("../models/Work");
 
 // Controller to render the add work data form
 exports.renderAddWorkDataForm = (req, res) => {
-  console.log("request in worktable ", req.cookies)
-  res.render("workpage", { formData: {}, errors: {} });
+
+  console.log("authtoken came in add work data ", req.query.authtoken)
+  res.render("workpage", { formData: {}, errors: {}, authToken: req.query.authtoken });
 };
 
 // Controller to handle the form submission
 exports.addWorkData = async (req, res) => {
   let errors = {};
-  console.log("came");
+  console.log("came to addinhg work data post ");
+
+
   try {
     const {
       jobName,
@@ -30,12 +33,19 @@ exports.addWorkData = async (req, res) => {
       !domain ||
       !salaryRange ||
       !officeType ||
-      !jobType
+      !jobType ||
+      !req.user.hrUserId
     ) {
       throw new Error("All fields are required");
     }
-    console.log(req.body);
-
+    console.log("in adding work")
+    let addedBy = '';
+    if (req.user) {
+      if (req.user.role === "HR") {
+        addedBy = req.user.hrUserId;
+      }
+    }
+    console.log("came here ")
     const workData = new WorkData({
       jobName,
       companyName,
@@ -44,27 +54,43 @@ exports.addWorkData = async (req, res) => {
       officeType,
       jobType,
       jobDescription,
+      addedBy: addedBy
+
     });
     await workData.save();
-    res.redirect("/dashboard"); // Redirect to the work data list page
+    res.redirect(`/worktable?authtoken=${req.query.authtoken}`); // Redirect to the work data list page
   } catch (error) {
     console.log("errors ", error.message);
     console.log(errors);
     // Pass the entered values and error message to the form
-    res.status(400).render("workpage", { formData: req.body, errors: errors });
+    res.status(400).render("workpage", { formData: req.body, errors: errors, authToken: req.query.authtoken });
   }
 };
 
 exports.getWorkTable = async (req, res) => {
-  console.log("rquest body and cookies is ", Object.keys(req))
+  console.log("in adding work")
+  // console.log("rquest body and cookies is ", Object.keys(req))
   try {
-    const formData = await WorkData.find();
-    console.log("workData is ", formData);
-    res.render("worktable", { formData });
+    let formData;
+    if (req.user) {
+      if (req.user.role === "HR") {
+
+        formData = await WorkData.find({ addedBy: req.user.hrUserId })
+      } else {
+        formData = await WorkData.find()
+      }
+
+
+      console.log("workData is ", formData);
+      res.render("worktable", { formData, authToken: req.query.authtoken });
+
+    }
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: "Error fetching form data" });
   }
+
+
 };
 
 exports.editWork = async (req, res) => {
@@ -74,7 +100,7 @@ exports.editWork = async (req, res) => {
   console.log("data got from db is ", formData);
 
   // Render the product edit page and pass the product data
-  res.render("workedit", { formData, errors: {} });
+  res.render("workedit", { formData, errors: {}, authToken: req.query.authtoken });
 };
 
 exports.updateEditWork = async (req, res) => {
@@ -111,13 +137,14 @@ exports.updateEditWork = async (req, res) => {
       { new: true }
     );
     if (updateProduct) {
-      res.redirect("/worktable")
+      res.redirect(`/worktable?authtoken=${req.query.authtoken}`); // Redirect to the work data list page
+
     }
     else {
-      res.render("workedit", { formData: req.body, errors: { finalError: "unable to update work details" } });
+      res.render("workedit", { formData: req.body, errors: { finalError: "unable to update work details" }, authToken: req.query.authtoken });
     }
   } catch (e) {
-    res.render("workedit", { formData: req.body, errors: { finalError: "Some Thing Went Wrong" } });
+    res.render("workedit", { formData: req.body, errors: { finalError: "Some Thing Went Wrong" }, authToken: req.query.authtoken });
   }
 };
 
@@ -134,5 +161,5 @@ exports.deleteWork = async (req, res) => {
   } catch (e) {
     console.log("unable to delete work")
   }
-  res.redirect("/worktable")
+  res.redirect(`/worktable?authtoken=${req.query.authtoken}`)
 }

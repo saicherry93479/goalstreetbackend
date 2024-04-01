@@ -28,7 +28,7 @@ exports.sendAccessEmail = async (req, res) => {
                     to: 'cherry.workspace.mail@gmail.com',
                     subject: 'Test Email',
                     text: `This is a test email sent from Node.js using Nodemailer.
-                    You can access page at http://localhost:3000/workdata/add?authtoken=${token}&role=HR`
+                    You can access page at https://goalstreetbackend.vercel.app/workdata/add?authtoken=${token}&role=HR`
                 };
                 let info = await transporter.sendMail(mailOptions);
                 console.log('Email sent: ' + info.response);

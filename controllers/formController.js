@@ -34,7 +34,7 @@ exports.getFormData = async (req, res) => {
     try {
         const formData = await FormData.find();
         console.log('formadata is ',formData)
-        res.render('dashboard', { formData });
+        res.render('dashboard', { formData,authToken:req.query.authtoken });
     } catch (err) {
         console.error(err);
         res.status(500).send({message:'Error fetching form data'});

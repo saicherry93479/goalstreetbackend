@@ -33,8 +33,7 @@ exports.addWorkData = async (req, res) => {
       !domain ||
       !salaryRange ||
       !officeType ||
-      !jobType ||
-      !req.user.hrUserId
+      !jobType 
     ) {
       throw new Error("All fields are required");
     }

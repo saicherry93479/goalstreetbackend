@@ -84,7 +84,8 @@
         </div>
 
         <a
-          href="/dashboard"
+          id="dashboardLink"
+          href="<%= `/dashboard?authtoken=${authToken}` %>"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-house-door-fill"></i>
@@ -93,7 +94,8 @@
           >
         </a>
         <a
-          href="/worktable"
+          id="dashboardLinkOne"
+          href="<%= `/worktable?authtoken=${authToken}` %>"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-person-workspace"></i>
@@ -102,7 +104,16 @@
           >
         </a>
         <a
-          href="/workdata/add"
+          id="dashboardLinkOne"
+          href="<%= `/hrFormPage?authtoken=${authToken}` %>"
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-people-fill"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">Hr Data</span>
+        </a>
+        <a
+          id="dashboardLinkTwo"
+          href="<%= `/workdata/add?authtoken=${authToken}` %>"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-plus-circle-fill"></i>
@@ -111,18 +122,18 @@
         <div class="my-4 bg-gray-600 h-[1px]"></div>
 
         <a
-          href="/logout"
+          href="<%= `/logout?authtoken=${authToken}` %>"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-box-arrow-in-right"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
-      </a>
+        </a>
       </div>
     </div>
     <div class="py-12 px-6 lg:mt-0">
       <h1 class="text-center font-bold mt-12">Edit Work Data</h1>
       <form
-        action="/works/edit/<%=formData._id%>"
+        action="/works/edit/<%=formData._id%>?authtoken=<%= authToken %>"
         method="POST"
         class="max-w-sm mx-auto"
       >

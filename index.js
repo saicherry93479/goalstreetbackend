@@ -20,10 +20,15 @@ async function authenticationMiddleware(req, res, next) {
   console.log("request is ", req.path, " - method is ", req.method)
   console.log("params is ", req.query)
   console.log("authtoken is ", authtoken)
-  if (req.path === '/') {
+  if (req.path === '/' ) {
     next();
     return;
   }
+  if(req.path==='/frontendWorkData' || req.path==='/submit' || req.path==='submitHrForm'){
+    next();
+    return;
+  } 
+  
 
   if (authtoken === null || authtoken === undefined) {
     console.log("req.cokkies is ",req.cookies)

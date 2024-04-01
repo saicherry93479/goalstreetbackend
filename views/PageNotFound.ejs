@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>DataTables</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <link
+      href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel=" stylesheet"
+    />
+    <!--Replace with your tailwind.css once created-->
+
+    <!--Regular Datatables CSS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <!--Responsive Extension Datatables CSS-->
+    <link
+      href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css"
+    />
+
+    <style>
+      /*Overrides for Tailwind CSS */
+
+      /*Form fields*/
+      .dataTables_wrapper select,
+      .dataTables_wrapper .dataTables_filter input {
+        color: #4a5568;
+        /*text-gray-700*/
+        padding-left: 1rem;
+        /*pl-4*/
+        padding-right: 1rem;
+        /*pl-4*/
+        padding-top: 0.5rem;
+        /*pl-2*/
+        padding-bottom: 0.5rem;
+        /*pl-2*/
+        line-height: 1.25;
+        /*leading-tight*/
+        border-width: 2px;
+        /*border-2*/
+        border-radius: 0.25rem;
+        border-color: #edf2f7;
+        /*border-gray-200*/
+        background-color: #edf2f7;
+        /*bg-gray-200*/
+      }
+
+      /*Row Hover*/
+      table.dataTable.hover tbody tr:hover,
+      table.dataTable.display tbody tr:hover {
+        background-color: #ebf4ff;
+        /*bg-indigo-100*/
+      }
+
+      /*Pagination Buttons*/
+      .dataTables_wrapper .dataTables_paginate .paginate_button {
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: 0.25rem;
+        /*rounded*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+      }
+
+      /*Pagination Buttons - Current selected */
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        color: #fff !important;
+        /*text-white*/
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        /*shadow*/
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: 0.25rem;
+        /*rounded*/
+        background: #667eea !important;
+        /*bg-indigo-500*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+      }
+
+      /*Pagination Buttons - Hover */
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        color: #fff !important;
+        /*text-white*/
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        /*shadow*/
+        font-weight: 700;
+        /*font-bold*/
+        border-radius: 0.25rem;
+        /*rounded*/
+        background: #667eea !important;
+        /*bg-indigo-500*/
+        border: 1px solid transparent;
+        /*border border-transparent*/
+      }
+
+      /*Add padding to bottom border */
+      table.dataTable.no-footer {
+        border-bottom: 1px solid #e2e8f0;
+        /*border-b-1 border-gray-300*/
+        margin-top: 0.75em;
+        margin-bottom: 0.75em;
+      }
+
+      /*Change colour of responsive icon*/
+      table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
+      table.dataTable.dtr-inline.collapsed
+        > tbody
+        > tr
+        > th:first-child:before {
+        background-color: #667eea !important;
+        /*bg-indigo-500*/
+      }
+      body {
+        font-family: "Ubuntu", sans-serif;
+      }
+    </style>
+    <script>
+      // Function to check if a cookie exists
+      function getCookie(name) {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(name + "=")) {
+            return cookie.substring(name.length + 1);
+          }
+        }
+        return null;
+      }
+
+      // Check if the authentication cookie exists
+      const authToken = getCookie("auth");
+
+      // If auth token exists, append it to the URL
+      if (authToken) {
+        const currentUrl = window.location.href;
+        const separator = currentUrl.includes("?") ? "&" : "?";
+        if (!currentUrl.includes("authtoken=")) {
+          const newUrl =
+            currentUrl +
+            separator +
+            "authtoken=" +
+            encodeURIComponent(authToken);
+          window.location.href = newUrl;
+        }
+      }
+    </script>
+  </head>
+
+  <body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+    <div class="relative">
+      <span
+        class="absolute text-white text-4xl top-5 left-4 cursor-pointer"
+        onclick="openSidebar()"
+      >
+        <i class="bi bi-filter-left px-2 bg-gray-900 rounded-md"></i>
+      </span>
+      <div
+        class="sidebar hidden lg:block fixed top-0 bottom-0 lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-900 z-10"
+      >
+        <div class="text-gray-100 text-xl">
+          <div class="p-2.5 mt-1 flex items-center">
+            <div class="bg-white p-4">
+              <img
+                src="https://www.goalstreet.in/assets/LOG_GOAL-D2oMq8u7.png"
+              />
+            </div>
+            <i
+              class="bi bi-x cursor-pointer ml-28 lg:hidden"
+              onclick="openSidebar()"
+            ></i>
+          </div>
+          <div class="my-2 bg-gray-600 h-[1px]"></div>
+        </div>
+
+        <a
+          id="dashboardLink"
+          href="<%= `/dashboard?authtoken=${authToken}` %>"
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-house-door-fill"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold"
+            >Form Data</span
+          >
+        </a>
+        <a
+          id="dashboardLinkOne"
+          href="<%= `/worktable?authtoken=${authToken}` %>"
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-person-workspace"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold"
+            >Work Data</span
+          >
+        </a>
+        <a
+          id="dashboardLinkOne"
+          href="<%= `/hrFormPage?authtoken=${authToken}` %>"
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-people-fill"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">Hr Data</span>
+        </a>
+        <a
+          id="dashboardLinkTwo"
+          href="<%= `/workdata/add?authtoken=${authToken}` %>"
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-plus-circle-fill"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">Add Work</span>
+        </a>
+        <div class="my-4 bg-gray-600 h-[1px]"></div>
+
+        <a
+          href="<%= `/logout?authtoken=${authToken}` %>"
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
+        </a>
+      </div>
+    </div>
+    <section
+      class="flex items-center h-full sm:p-16 dark:bg-gray-900 dark:text-gray-100"
+    >
+      <div
+        class="container flex flex-col items-center justify-center px-5 mx-auto my-8 space-y-8 text-center sm:max-w-md"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512"
+          class="w-40 h-40 dark:text-gray-600"
+        >
+          <path
+            fill="currentColor"
+            d="M256,16C123.452,16,16,123.452,16,256S123.452,496,256,496,496,388.548,496,256,388.548,16,256,16ZM403.078,403.078a207.253,207.253,0,1,1,44.589-66.125A207.332,207.332,0,0,1,403.078,403.078Z"
+          ></path>
+          <rect
+            width="176"
+            height="32"
+            x="168"
+            y="320"
+            fill="currentColor"
+          ></rect>
+          <polygon
+            fill="currentColor"
+            points="210.63 228.042 186.588 206.671 207.958 182.63 184.042 161.37 162.671 185.412 138.63 164.042 117.37 187.958 141.412 209.329 120.042 233.37 143.958 254.63 165.329 230.588 189.37 251.958 210.63 228.042"
+          ></polygon>
+          <polygon
+            fill="currentColor"
+            points="383.958 182.63 360.042 161.37 338.671 185.412 314.63 164.042 293.37 187.958 317.412 209.329 296.042 233.37 319.958 254.63 341.329 230.588 365.37 251.958 386.63 228.042 362.588 206.671 383.958 182.63"
+          ></polygon>
+        </svg>
+        <p class="text-3xl">Looks like you dont have access to this page</p>
+      </div>
+    </section>
+
+    <!--/container-->
+
+    <!-- jQuery -->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+    ></script>
+
+    <!--Datatables -->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        var table = $("#example")
+          .DataTable({
+            responsive: true,
+          })
+          .columns.adjust()
+          .responsive.recalc();
+      });
+    </script>
+    <script type="text/javascript">
+      function dropdown() {
+        document.querySelector("#submenu").classList.toggle("hidden");
+        document.querySelector("#arrow").classList.toggle("rotate-0");
+      }
+      dropdown();
+
+      function openSidebar() {
+        document.querySelector(".sidebar").classList.toggle("hidden");
+      }
+    </script>
+  </body>
+</html>

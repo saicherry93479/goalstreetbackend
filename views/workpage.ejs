@@ -35,12 +35,22 @@
         }
         return null;
       }
+      function getURLParameter(name) {
+        return (
+          decodeURIComponent(
+            (new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(
+              location.search
+            ) || [null, ""])[1].replace(/\+/g, "%20")
+          ) || null
+        );
+      }
 
       // Check if the authentication cookie exists
       const authToken = getCookie("auth");
 
       // If auth token exists, append it to the URL
       if (authToken) {
+        console.log("token present");
         const currentUrl = window.location.href;
         const separator = currentUrl.includes("?") ? "&" : "?";
         if (!currentUrl.includes("authtoken=")) {
@@ -51,8 +61,25 @@
             encodeURIComponent(authToken);
           window.location.href = newUrl;
         }
+      } else {
+        console.log("token  not present");
+        // If there's no auth cookie, check the URL for authtoken and userType
+        const urlAuthToken = getURLParameter("authtoken");
+        const userType = getURLParameter("role");
 
-        // Redirect to the new URL
+        console.log("token and hr is ", urlAuthToken, " -- ", userType);
+
+        // Check if both parameters exist and userType is 'HR', then set the cookie
+        if (urlAuthToken) {
+          console.log("Setting up it is HR");
+          // Assuming setCookie is a function to set a cookie
+          // You might need to define this function or replace it with your method of setting cookies
+          // Example setCookie function: setCookie('auth', urlAuthToken, expiryDays);
+          document.cookie = "auth=" + urlAuthToken + "; path=/;"; // Set cookie path as per requirement
+
+          // Optionally, you might want to redirect or reload the page after setting the cookie
+          // location.reload(); // Uncomment if needed
+        }
       }
     </script>
   </head>
@@ -84,7 +111,7 @@
 
         <a
           id="dashboardLink"
-          href="/dashboard"
+          href="<%= `/dashboard?authtoken=${authToken}` %>"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-house-door-fill"></i>
@@ -94,7 +121,7 @@
         </a>
         <a
           id="dashboardLinkOne"
-          href="/worktable"
+          href="<%= `/worktable?authtoken=${authToken}` %>"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-person-workspace"></i>
@@ -103,8 +130,16 @@
           >
         </a>
         <a
+          id="dashboardLinkOne"
+          href="<%= `/hrFormPage?authtoken=${authToken}` %>"
+          class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
+        >
+          <i class="bi bi-people-fill"></i>
+          <span class="text-[15px] ml-4 text-gray-200 font-bold">Hr Data</span>
+        </a>
+        <a
           id="dashboardLinkTwo"
-          href="/workdata/add"
+          href="<%= `/workdata/add?authtoken=${authToken}` %>"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-plus-circle-fill"></i>
@@ -113,17 +148,21 @@
         <div class="my-4 bg-gray-600 h-[1px]"></div>
 
         <a
-          href="/logout"
+          href="<%= `/logout?authtoken=${authToken}` %>"
           class="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
         >
           <i class="bi bi-box-arrow-in-right"></i>
           <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
-      </a>
+        </a>
       </div>
     </div>
     <div class="py-12 px-6 lg:mt-0">
       <h1 class="text-center font-bold mt-12">Add Work Data</h1>
-      <form action="/workdata/add" method="POST" class="max-w-sm mx-auto">
+      <form
+        method="POST"
+        action="<%=`/workdata/add?authtoken=${authToken}` %>"
+        class="max-w-sm mx-auto"
+      >
         <div class="mb-5">
           <label
             for="jobName"

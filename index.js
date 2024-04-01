@@ -24,7 +24,7 @@ async function authenticationMiddleware(req, res, next) {
     next();
     return;
   }
-  if(req.path==='/frontendWorkData' || req.path==='/submit' || req.path==='submitHrForm'){
+  if(req.path==='/frontendWorkData' || req.path==='/submit' || req.path==='/submitHrForm'){
     next();
     return;
   } 

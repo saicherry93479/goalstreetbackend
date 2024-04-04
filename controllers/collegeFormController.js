@@ -13,7 +13,7 @@ exports.collegeSubmitForm = async (req, res) => {
 
 
     try {
-        const existingData = await CollegeForm.findOne({ $or: [{ pcEmail }, { pcPhoneNumber },{collegeName}] });
+        const existingData = await CollegeForm.findOne({ $or: [{ pcEmail }, { pcPhoneNumber }] });
         if (existingData) {
              res.status(200).send({status:false,message:'Email or phone number already exists'});
              return

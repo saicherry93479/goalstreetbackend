@@ -11,7 +11,7 @@ const { login, authenticate, logout } = require("./controllers/authController");
 const { submitHrForm, getHrFormData } = require("./controllers/hrFormController");
 const { sendAccessEmail } = require("./controllers/emailController");
 const { notFoundPage } = require("./controllers/utilController");
-const { collegeSubmitForm } = require("./controllers/collegeFormController");
+const { collegeSubmitForm, getCollegeFormData } = require("./controllers/collegeFormController");
 
 
 const secretKey = 'mysecretkey_goalstreet';
@@ -124,6 +124,7 @@ app.get("/hrFormPage", getHrFormData)
 app.get("/sendAccessEmail", sendAccessEmail);
 app.get("/pageNotFound", notFoundPage)
 app.post("/submitCollegeForm",collegeSubmitForm)
+app.get("/collegeData",getCollegeFormData)
 
 // const url = "mongodb://localhost/mydatabase";
 // mongoose.connect(url);

@@ -11,6 +11,8 @@ const { login, authenticate, logout } = require("./controllers/authController");
 const { submitHrForm, getHrFormData } = require("./controllers/hrFormController");
 const { sendAccessEmail } = require("./controllers/emailController");
 const { notFoundPage } = require("./controllers/utilController");
+const { collegeSubmitForm } = require("./controllers/collegeFormController");
+
 
 const secretKey = 'mysecretkey_goalstreet';
 
@@ -24,7 +26,7 @@ async function authenticationMiddleware(req, res, next) {
     next();
     return;
   }
-  if(req.path==='/frontendWorkData' || req.path==='/submit' || req.path==='/submitHrForm'){
+  if(req.path==='/frontendWorkData' || req.path==='/submit' || req.path==='/submitHrForm' || req.path==="/submitCollegeForm"){
     next();
     return;
   } 
@@ -121,6 +123,7 @@ app.post("/submitHrForm", submitHrForm)
 app.get("/hrFormPage", getHrFormData)
 app.get("/sendAccessEmail", sendAccessEmail);
 app.get("/pageNotFound", notFoundPage)
+app.post("/submitCollegeForm",collegeSubmitForm)
 
 // const url = "mongodb://localhost/mydatabase";
 // mongoose.connect(url);

@@ -29,3 +29,15 @@ exports.collegeSubmitForm = async (req, res) => {
         res.status(200).send({status:false,message:'Error saving form data'});
     }
 };
+
+exports.getCollegeFormData = async (req, res) => {
+    try {
+        const formData = await CollegeForm.find();
+        console.log('formadata is ',formData)
+        res.render('CollegeDataPage', { formData,authToken:req.query.authtoken });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send({message:'Error fetching form data'});
+    }
+
+}

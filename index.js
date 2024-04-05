@@ -5,9 +5,9 @@ const formController = require("./controllers/formController");
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const dotenv=require('dotenv');
 
 
-var cors = require("cors");
 const { addWorkData, renderAddWorkDataForm, getWorkTable, editWork, updateEditWork, sendWorkDataToFrontEnd, deleteWork } = require("./controllers/workController");
 const { login, authenticate, logout } = require("./controllers/authController");
 const { submitHrForm, getHrFormData } = require("./controllers/hrFormController");
@@ -16,7 +16,10 @@ const { notFoundPage } = require("./controllers/utilController");
 const { collegeSubmitForm, getCollegeFormData } = require("./controllers/collegeFormController");
 
 
-const secretKey = 'mysecretkey_goalstreet';
+var cors = require("cors");
+dotenv.config();
+
+const secretKey = process.env.SECRET_KEY;
 
 async function authenticationMiddleware(req, res, next) {
   let authtoken = req.query.authtoken;
@@ -83,21 +86,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(authenticationMiddleware)
 
-const url='mongodb+srv://cherryworkspacemail:cherryworkspacemail@cluster0.qqvoel7.mongodb.net/?retryWrites=true&w=majority';
+const url=process.env.DB_URL;
 
 
-
-// Connect to MongoDB
-// mongoose
-//   .connect(url)
-//   .then(() => {
-//     console.log("connected");
-//   })
-//   .catch((err) => {
-//     console.log("error is ", err);
-// });
-
-// connection()
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
@@ -105,7 +96,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
-// Routes
+
 
 
 
@@ -129,9 +120,8 @@ app.get("/pageNotFound", notFoundPage)
 app.post("/submitCollegeForm",collegeSubmitForm)
 app.get("/collegeData",getCollegeFormData)
 
-// const url = "mongodb://localhost/mydatabase";
-// mongoose.connect(url);
-const port = 3000;
+
+const port = process.env.PORT || 3000;
 const start = async () => {
   try {
     await mongoose

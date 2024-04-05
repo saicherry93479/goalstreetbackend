@@ -133,6 +133,36 @@
         font-family: "Ubuntu", sans-serif;
       }
     </style>
+<script>
+      // Function to check if a cookie exists
+      function getCookie(name) {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.startsWith(name + "=")) {
+            return cookie.substring(name.length + 1);
+          }
+        }
+        return null;
+      }
+
+      // Check if the authentication cookie exists
+      const authToken = getCookie("auth");
+      // If auth token exists, append it to the URL
+      if (authToken) {
+        const currentUrl = window.location.href;
+        const separator = currentUrl.includes("?") ? "&" : "?";
+        if (!currentUrl.includes("authtoken=")) {
+          const newUrl =
+            currentUrl +
+            separator +
+            "authtoken=" +
+            encodeURIComponent(authToken);
+          window.location.href = newUrl;
+        }
+        // Redirect to the new URL
+      }
+    </script>
 
   </head>
 

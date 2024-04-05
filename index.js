@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const formController = require("./controllers/formController");
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const path = require('path');
+
 
 var cors = require("cors");
 const { addWorkData, renderAddWorkDataForm, getWorkTable, editWork, updateEditWork, sendWorkDataToFrontEnd, deleteWork } = require("./controllers/workController");
@@ -78,6 +80,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(authenticationMiddleware)
 
 const url='mongodb+srv://cherryworkspacemail:cherryworkspacemail@cluster0.qqvoel7.mongodb.net/?retryWrites=true&w=majority';
